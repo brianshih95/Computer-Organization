@@ -78,7 +78,13 @@ endgenerate
 
 always@(posedge clk or negedge rst_n) 
 begin
-	if(rst_n) begin
+    if(!rst_n) begin
+        cout = 0;
+        overflow = 0;
+        zero = 0;
+        result = 0;
+    end
+	else begin
         cout = 0;
         overflow = 0;
         result = tmp_result;
