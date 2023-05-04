@@ -12,7 +12,6 @@
 
 module Decoder(
     instr_op_i,
-	funct_i,
 	RegWrite_o,
 	ALU_op_o,
 	ALUSrc_o,
@@ -27,14 +26,13 @@ module Decoder(
 
 //I/O ports
 input  [6-1:0] instr_op_i;
-input  [6-1:0] funct_i;
 
 output         RegWrite_o;
 output [3-1:0] ALU_op_o;
 output         ALUSrc_o;
 output [2-1:0] RegDst_o;
 output         Branch_o;
-output [2-1:0] Jump_o;
+output 		   Jump_o;
 output		   MemRead_o;
 output		   MemWrite_o;
 output [2-1:0] MemtoReg_o;
@@ -46,14 +44,14 @@ reg            ALUSrc_o;
 reg            RegWrite_o;
 reg    [2-1:0] RegDst_o;
 reg            Branch_o;
-reg    [2-1:0] Jump_o;
+reg    		   Jump_o;
 reg		       MemRead_o;
 reg		       MemWrite_o;
 reg    [2-1:0] MemtoReg_o;
 reg    [2-1:0] BranchType_o;
 
 //Main function
-always @(instr_op_i, funct_i) begin
+always @(instr_op_i) begin
 	case (instr_op_i)	 
 		6'b000000: begin	// r-format(add, sub, and, or, slt, jr)
 			RegWrite_o <= 1'b1;
@@ -61,23 +59,13 @@ always @(instr_op_i, funct_i) begin
 			ALUSrc_o <= 1'b0;
 			RegDst_o <= 2'b01;
 			Branch_o <= 1'b0;
-			case (funct_i)
-				6'b001000: begin	// jr
-					Jump_o <= 2'b10;
-					MemRead_o <= 1'b0;
-					MemWrite_o <= 1'b0;
-					MemtoReg_o <= 2'b00;
-					BranchType_o <= 2'b00;
-				end
-				default: begin		// others
-					Jump_o <= 2'b01;
-					MemRead_o <= 1'b0;
-					MemWrite_o <= 1'b0;
-					MemtoReg_o <= 2'b00;
-					BranchType_o <= 2'b00;
-				end
-			endcase
-		end
+
+			Jump_o <= 1'b1;
+			MemRead_o <= 1'b0;
+			MemWrite_o <= 1'b0;
+			MemtoReg_o <= 2'b00;
+			BranchType_o <= 2'b00;
+			end
 		6'b001000: begin	// addi
 			RegWrite_o <= 1'b1;
 			ALU_op_o <= 3'b000;  
@@ -85,7 +73,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00; 
 			Branch_o <= 1'b0;
 
-			Jump_o <= 2'b01;
+			Jump_o <= 1'b1;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b00;
@@ -98,7 +86,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00; 
 			Branch_o <= 1'b0;
 
-			Jump_o <= 2'b01;
+			Jump_o <= 1'b1;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b00;
@@ -111,7 +99,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00;
 			Branch_o <= 1'b1;
 
-			Jump_o <= 2'b01;
+			Jump_o <= 1'b1;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b00;
@@ -124,7 +112,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00; 
 			Branch_o <= 1'b0; 
 
-			Jump_o <= 2'b01;
+			Jump_o <= 1'b1;
 			MemRead_o <= 1'b1;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b01;
@@ -137,7 +125,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00;
 			Branch_o <= 1'b0; 
 
-			Jump_o <= 2'b01;
+			Jump_o <= 1'b1;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b1;
 			MemtoReg_o <= 2'b00;
@@ -150,7 +138,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b00;
 			Branch_o <= 1'b0;
 
-			Jump_o <= 2'b00;
+			Jump_o <= 1'b0;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b00;
@@ -163,7 +151,7 @@ always @(instr_op_i, funct_i) begin
 			RegDst_o <= 2'b10;
 			Branch_o <= 1'b0;
 
-			Jump_o <= 2'b00;
+			Jump_o <= 1'b0;
 			MemRead_o <= 1'b0;
 			MemWrite_o <= 1'b0;
 			MemtoReg_o <= 2'b11;
@@ -171,7 +159,7 @@ always @(instr_op_i, funct_i) begin
 		end
 		default: begin
 			{RegWrite_o, ALU_op_o, ALUSrc_o, RegDst_o, Branch_o} <= 8'bxxxxxxxx;
-			{Jump_o, MemRead_o, MemWrite_o, MemtoReg_o, BranchType_o} <= 8'bxxxxxxxx;
+			{Jump_o, MemRead_o, MemWrite_o, MemtoReg_o, BranchType_o} <= 7'bxxxxxxx;
 		end
 	endcase
 end

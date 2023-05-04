@@ -41,7 +41,7 @@ wire        ALU_src;
 wire        branch;
 wire [1:0]	mem_to_reg;
 wire [1:0]  branch_type;
-wire [1:0]	jump;
+wire     	jump;
 wire 		mem_read;
 wire        mem_write;
 // AC
@@ -58,8 +58,9 @@ wire [31:0] read_data;
 // Adder2
 wire [31:0] shifted_1;
 wire [31:0] sum_2;
-// Mux_PC_Source
+// Mux_source
 wire [31:0] mux_out_2;
+wire [31:0] mux_out_3;
 // Shifter2
 wire [31:0] shifted_2;
 // Mux_ALU_o
@@ -107,7 +108,6 @@ Reg_File Registers(
 
 Decoder Decoder(
 		.instr_op_i(instr[31:26]), 
-		.funct_i(instr[5:0]),   
 		.RegWrite_o(reg_write), 
 		.ALU_op_o(ALU_op),   
 		.ALUSrc_o(ALU_src),   
@@ -166,12 +166,11 @@ Shift_Left_Two_32 Shifter1(
 		.data_o(shifted_1)
 		); 		
 
-MUX_3to1 #(.size(32)) Mux_PC_Source(
+MUX_2to1 #(.size(32)) Mux_source(
 		.data0_i({sum_1[31:28], shifted_2[27:0]}),
 		.data1_i(mux_out_2),
-		.data2_i(RSdata),
 		.select_i(jump),
-		.data_o(pc_in)
+		.data_o(mux_out_3)
 		);	
 
 
@@ -204,5 +203,12 @@ MUX_2to1 #(.size(32)) Mux_sum(
 		.select_i(branch & mux_out_1),
 		.data_o(mux_out_2)
 		);	
+
+MUX_2to1 #(.size(32)) Mux_PC_Source(
+		.data0_i(mux_out_3),
+		.data1_i(RSdata),
+		.select_i((~ALU_op[0] & ALU_op[1] & ~ALU_op[2]) & (~instr[0] & ~instr[1] & ~instr[2] & instr[3] & ~instr[4] & ~instr[5])),
+		.data_o(pc_in)
+		);
 
 endmodule
