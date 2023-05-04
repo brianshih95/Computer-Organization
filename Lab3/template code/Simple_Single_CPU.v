@@ -11,13 +11,13 @@
 //--------------------------------------------------------------------------------
 
 module Simple_Single_CPU(
-		clk_i,
-		rst_i
-		);
+			clk_i,
+			rst_i
+			);
 
 //I/O port
-input         clk_i;
-input         rst_i;
+input       clk_i;
+input       rst_i;
 
 //Internal Signals
 // PC

@@ -1,12 +1,12 @@
 // 110550108
 module MUX_4to1(
-                data0_i,
-                data1_i,
-                data2_i,
-                data3_i,
-                select_i,
-                data_o
-                );
+    data0_i,
+    data1_i,
+    data2_i,
+    data3_i,
+    select_i,
+    data_o
+    );
 
 parameter size = 0;			   
 
