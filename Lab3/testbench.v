@@ -51,7 +51,7 @@ always@(posedge clk) begin
             ); */
 
         // Show Result
-        if(CPU.PC.pc_in_i > `test_data1_end) begin
+        if(CPU.PC.pc_in_i > `test_data2_end) begin
             // Display result in console
             $display("- Register File -\n r0 =%6d\t r1 =%6d\t r2 =%6d\t r3 =%6d\n r4 =%6d\t r5 =%6d\t r6 =%6d\t r7 =%6d\n r8 =%6d\t r9 =%6d\tr10 =%6d\tr11 =%6d\nr12 =%6d\tr13 =%6d\tr14 =%6d\tr15 =%6d\nr16 =%6d\tr17 =%6d\tr18 =%6d\tr19 =%6d\nr20 =%6d\tr21 =%6d\tr22 =%6d\tr23 =%6d\nr24 =%6d\tr25 =%6d\tr26 =%6d\tr27 =%6d\nr28 =%6d\tr29 =%6d\tr30 =%6d\tr31 =%6d\n",
                 CPU.Registers.REGISTER_BANK[0], CPU.Registers.REGISTER_BANK[1], CPU.Registers.REGISTER_BANK[2], CPU.Registers.REGISTER_BANK[3], CPU.Registers.REGISTER_BANK[4], 
